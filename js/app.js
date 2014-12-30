@@ -67,9 +67,17 @@ var example = (function() {
     // BOX
     box = new THREE.Mesh(
       new THREE.BoxGeometry(20, 20, 20),
-      new THREE.MeshBasicMaterial({color: 0xFF0000})
+      new THREE.MeshBasicMaterial({
+        color: 0xFFFFFF,
+        vertexColors: THREE.FaceColors
+      })
     );
     box.name = 'box';
+
+    // HACK HACK HACK
+    box.geometry.faces.forEach(function(face) {
+      face.color.setRGB(Math.random(), Math.random(), Math.random());
+    })
 
     // Scene setup.
     scene.add(light);
