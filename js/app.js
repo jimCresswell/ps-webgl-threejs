@@ -7,15 +7,18 @@ var example = (function() {
 
   // Fallback to canvas renderer if WebGL isn't available.
   if (window.WebGLRenderingContext) {
-    renderer = new THREE.WebGLRenderer();
+    try {
+      renderer = new THREE.WebGLRenderer();
+    } catch (err) {
+      console.error(error);
+      renderer = new THREE.CanvasRenderer();
+    }
   } else {
     renderer = new THREE.CanvasRenderer();
   }
 
   // Make it go!
   function go() {
-    console.log('go');
-
     initScene();
     render();
   }
