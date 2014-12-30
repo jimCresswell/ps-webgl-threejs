@@ -12,16 +12,24 @@ var example = (function() {
     renderer = new THREE.CanvasRenderer();
   }
 
+  // Make it go!
+  function go() {
+    console.log('go');
+
+    initScene();
+    render();
+  }
+  if (window.loaded) {
+    go();
+  } else {
+    window.addEventListener('load', go);
+  }
+
+
   // Expose the scene object for debugging.
   return {
     scene: scene
   }
-
-  // Make it go!
-  window.addEventListener('load', function() {
-    initScene();
-    render();
-  });
 
   /**
    * Scene setup
@@ -31,9 +39,7 @@ var example = (function() {
     var width = window.innerWidth;
     var height = window.innerHeight;
 
-    // DEBUG
-    console.log(width, height);
-    console.log('initing');
+
 
     // RENDERER SETUP.
     renderer.setSize(width, height);
