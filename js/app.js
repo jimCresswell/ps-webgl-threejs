@@ -34,6 +34,11 @@ var example = (function() {
     scene: scene
   }
 
+
+  /**
+   * Functions.
+   */
+
   /**
    * Scene setup
    * @return {undefined}
