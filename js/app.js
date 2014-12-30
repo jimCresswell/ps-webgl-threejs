@@ -53,8 +53,6 @@ var example = (function() {
     renderer.setSize(width, height);
     document.getElementById('webgl-container').appendChild(renderer.domElement);
 
-
-
     // CAMERA
     // Camera default pointing down -z axis.
     // FOV deg, aspect ratio, near clipping plane, far clipping plane.
@@ -64,7 +62,7 @@ var example = (function() {
       1,
       1000
     );
-    camera.position.z = 10;;
+    camera.position.z = 100;
 
     // BOX
     box = new THREE.Mesh(
@@ -82,6 +80,10 @@ var example = (function() {
   // Infinite recursive loop.
   function render() {
     renderer.render(scene, camera);
+
+    box.rotation.y += 0.01;
+    box.rotation.x += 0.02;
+    box.rotation.z += 0.015;
 
     window.requestAnimationFrame(render);
   }
