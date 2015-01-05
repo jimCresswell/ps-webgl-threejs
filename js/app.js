@@ -133,15 +133,15 @@
   function render() {
     renderer.render(scene, camera);
 
-    box.rotation.y += 0.01;
+    box.rotation.y += 0.012;
     box.rotation.x += 0.02;
     box.rotation.z += 0.015;
 
     if (triangle) {
-      triangle.rotation.x += 0.015;
+      triangle.rotation.x += 0.01;
     }
     if (dummy) {
-      dummy.rotation.y += -0.01;
+      dummy.rotation.y += -0.012;
     }
 
     if (monkeyHead) {
