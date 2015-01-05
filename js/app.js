@@ -22,6 +22,7 @@
     initScene();
     render();
   }
+
   if (window.loaded) {
     go();
   } else {
