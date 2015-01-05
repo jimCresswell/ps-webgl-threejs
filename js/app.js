@@ -85,30 +85,7 @@
     scene.add(camera);
     scene.add(box);
 
-
-    /**
-     * Manual geometry and material example.
-     */
-
-    var manualMaterial = new THREE.MeshBasicMaterial({
-      vertexColors: THREE.VertexColors,
-      side: THREE.Doubleside
-    });
-    var triangleGeometry = new THREE.Geometry();
-    triangleGeometry.vertices.push (new THREE.Vector3(0.0, 1.0, 0.0));
-    triangleGeometry.vertices.push (new THREE.Vector3(-1.0, -1.0, 0.0));
-    triangleGeometry.vertices.push (new THREE.Vector3(1.0, -1.0, 0.0));
-
-    triangleGeometry.faces.push(new THREE.Face3(0, 1, 2));
-
-    triangleGeometry.faces[0].vertexColors[0] = new THREE.Color(0xFF0000);
-    triangleGeometry.faces[0].vertexColors[1] = new THREE.Color(0x00FF00);
-    triangleGeometry.faces[0].vertexColors[2] = new THREE.Color(0xFF0000);
-
-    var manualMesh = new THREE.Mesh(triangleGeometry, manualMaterial);
-    manualMesh.position.x = 25;
-    manualMesh.scale.set(10, 10, 10);
-    scene.add(manualMesh);
+    scene.add(getTriangleMesh());
   }
 
   // Infinite recursive loop.
@@ -122,3 +99,31 @@
     window.requestAnimationFrame(render);
   }
 })();
+
+/**
+ * Manual geometry and material example.
+ */
+function getTriangleMesh() {
+  'use strict';
+
+  var manualMaterial = new THREE.MeshBasicMaterial({
+    vertexColors: THREE.VertexColors,
+    side: THREE.Doubleside
+  });
+  var triangleGeometry = new THREE.Geometry();
+  triangleGeometry.vertices.push (new THREE.Vector3(0.0, 1.0, 0.0));
+  triangleGeometry.vertices.push (new THREE.Vector3(-1.0, -1.0, 0.0));
+  triangleGeometry.vertices.push (new THREE.Vector3(1.0, -1.0, 0.0));
+
+  triangleGeometry.faces.push(new THREE.Face3(0, 1, 2));
+
+  triangleGeometry.faces[0].vertexColors[0] = new THREE.Color(0xFF0000);
+  triangleGeometry.faces[0].vertexColors[1] = new THREE.Color(0x00FF00);
+  triangleGeometry.faces[0].vertexColors[2] = new THREE.Color(0xFF0000);
+
+  var manualMesh = new THREE.Mesh(triangleGeometry, manualMaterial);
+  manualMesh.position.x = 25;
+  manualMesh.scale.set(10, 10, 10);
+
+  return manualMesh;
+}
