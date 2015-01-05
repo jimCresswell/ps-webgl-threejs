@@ -83,9 +83,23 @@
     // Scene setup.
     scene.add(light);
     scene.add(camera);
+
+    // Add built in box geometry example.
     scene.add(box);
 
+    // Add custom triangle gemetry example.
     scene.add(getTriangleMesh());
+
+    // Add loaded geometry example.
+    var loader = new THREE.ColladaLoader();
+    loader.options.convertUpAxis = true;
+
+    var modelUrl = window.location.href + 'models/3DRT-test-character-model/test_Collada_DAE.DAE';
+    loader.load(modelUrl, function(collada) {
+      var model = collada.scene;
+      model.position.x = -24;
+      scene.add(model);
+    });
   }
 
   // Infinite recursive loop.
