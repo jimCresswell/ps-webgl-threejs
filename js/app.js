@@ -1,4 +1,4 @@
-var example = (function() {
+(function() {
   'use strict';
 
   var scene = new THREE.Scene();
@@ -9,8 +9,8 @@ var example = (function() {
   if (window.WebGLRenderingContext) {
     try {
       renderer = new THREE.WebGLRenderer();
-    } catch (err) {
-      console.error(error);
+    } catch (error) {
+      console.warning(error);
       renderer = new THREE.CanvasRenderer();
     }
   } else {
@@ -32,7 +32,7 @@ var example = (function() {
   // Expose the scene object for debugging.
   return {
     scene: scene
-  }
+  };
 
 
   /**
@@ -77,7 +77,7 @@ var example = (function() {
     // HACK HACK HACK
     box.geometry.faces.forEach(function(face) {
       face.color.setRGB(Math.random(), Math.random(), Math.random());
-    })
+    });
 
     // Scene setup.
     scene.add(light);
