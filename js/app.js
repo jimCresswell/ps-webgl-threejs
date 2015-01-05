@@ -3,7 +3,7 @@
 
   var scene = new THREE.Scene();
   var light = new THREE.AmbientLight(0xffffff);
-  var renderer, camera, box;
+  var renderer, camera, box, triangle, dummy, monkeyHead;
 
   // Fallback to canvas renderer if WebGL isn't available.
   if (window.WebGLRenderingContext) {
@@ -73,6 +73,8 @@
         vertexColors: THREE.FaceColors
       })
     );
+    box.position.y = 10;
+    box.scale.set(0.5, 0.5, 0.5);
     box.name = 'box';
 
     // HACK HACK HACK
@@ -88,17 +90,42 @@
     scene.add(box);
 
     // Add custom triangle gemetry example.
-    scene.add(getTriangleMesh());
+    triangle = getTriangleMesh();
+    triangle.position.x = 25;
+    triangle.position.y = 10;
+    triangle.scale.set(5, 5, 5);
+    scene.add(triangle);
 
-    // Add loaded geometry example.
+    // Add loaded geometry example using the Collada DAE
+    // file format via the Threejs Collada Loader.
     var loader = new THREE.ColladaLoader();
     loader.options.convertUpAxis = true;
 
     var modelUrl = window.location.href + 'models/3DRT-test-character-model/test_Collada_DAE.DAE';
     loader.load(modelUrl, function(collada) {
-      var model = collada.scene;
-      model.position.x = -24;
-      scene.add(model);
+      dummy = collada.scene;
+      dummy.position.x = -20;
+      dummy.position.y = -15;
+      dummy.scale.set(2,2,2);
+      scene.add(dummy);
+    });
+
+    // Load a model exported from Blender using
+    // the build in Threejs file format
+    var tjsLoader = new THREE.JSONLoader();
+    tjsLoader.load(window.location.href + 'models/monkeyHead.json', function(geometry, materials) {
+      var material = new THREE.MeshBasicMaterial({
+        color: 0xc0c0c0,
+        wireframe: true
+      });
+
+      monkeyHead = new THREE.Mesh(geometry, material);
+
+      monkeyHead.position.x = 15;
+      monkeyHead.position.y = -10;
+      monkeyHead.scale.set(8, 8, 8);
+
+      scene.add(monkeyHead);
     });
   }
 
@@ -109,6 +136,17 @@
     box.rotation.y += 0.01;
     box.rotation.x += 0.02;
     box.rotation.z += 0.015;
+
+    if (triangle) {
+      triangle.rotation.x += 0.015;
+    }
+    if (dummy) {
+      dummy.rotation.y += -0.01;
+    }
+
+    if (monkeyHead) {
+      monkeyHead.rotation.y += 0.012;
+    }
 
     window.requestAnimationFrame(render);
   }
@@ -122,7 +160,7 @@ function getTriangleMesh() {
 
   var manualMaterial = new THREE.MeshBasicMaterial({
     vertexColors: THREE.VertexColors,
-    side: THREE.Doubleside
+    side: THREE.DoubleSide
   });
   var triangleGeometry = new THREE.Geometry();
   triangleGeometry.vertices.push (new THREE.Vector3(0.0, 1.0, 0.0));
@@ -135,9 +173,5 @@ function getTriangleMesh() {
   triangleGeometry.faces[0].vertexColors[1] = new THREE.Color(0x00FF00);
   triangleGeometry.faces[0].vertexColors[2] = new THREE.Color(0xFF0000);
 
-  var manualMesh = new THREE.Mesh(triangleGeometry, manualMaterial);
-  manualMesh.position.x = 25;
-  manualMesh.scale.set(10, 10, 10);
-
-  return manualMesh;
+  return new THREE.Mesh(triangleGeometry, manualMaterial);
 }
