@@ -76,8 +76,8 @@
         specular: 0xffffff,
         shininess: 100,
         transparent: true,
-        opacity: 0.60,
-        side: THREE.doubleSide
+        opacity: 0.80,
+        side: THREE.DoubleSide
       });
 
       crystalMonkeySkull = new THREE.Mesh(geometry, material);
