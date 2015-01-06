@@ -70,7 +70,7 @@
     );
     camera.position.z = 100;
 
-    // BOX
+    // Box 1, Lambert material.
     box1 = new THREE.Mesh(
       new THREE.BoxGeometry(20, 20, 20),
       new THREE.MeshLambertMaterial({
@@ -83,6 +83,7 @@
     box1.position.y = 10;
     box1.castShadow = true;
 
+    // Box 2, Phong material.
     box2 = new THREE.Mesh(
       new THREE.BoxGeometry(20, 20, 20),
       new THREE.MeshPhongMaterial({
