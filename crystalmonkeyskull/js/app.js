@@ -125,8 +125,9 @@
   }
 })();
 
+// http://stackoverflow.com/questions/20774648/three-js-generate-uv-coordinate
 function assignUVs(geometry) {
-
+  'use strict';
     geometry.faceVertexUvs[0] = [];
 
     geometry.faces.forEach(function(face) {
