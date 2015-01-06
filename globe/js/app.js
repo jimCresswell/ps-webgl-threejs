@@ -9,7 +9,7 @@
   var scene = new THREE.Scene();
   var ambientLight = new THREE.AmbientLight(0xf0f0f0);
   var sunLight = new THREE.DirectionalLight(0x202020);
-  var renderer, camera, globe;
+  var renderer, camera, globe, clouds;
 
   // Fallback to canvas renderer if WebGL isn't available.
   if (window.WebGLRenderingContext) {
@@ -101,16 +101,8 @@
 
 
     // CLOUDS.
-    var cloudGeometry = new THREE.SphereGeometry(21, 32, 32);
-    var cloudMaterial = new THREE.MeshPhongMaterial({
-      side        : THREE.DoubleSide,
-      opacity     : 0.8,
-      transparent : true,
-      depthWrite  : false,
-    });
-    var cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
-    globe.add(cloudMesh);
-
+    clouds = createCloudMesh();
+    globe.add(clouds);
   }
 
   // Infinite recursive loop.
@@ -118,9 +110,79 @@
     renderer.render(scene, camera);
 
     if (globe) {
-      globe.rotation.y += 0.005;
+      globe.rotation.y += 0.004;
+    }
+
+    if (clouds) {
+      clouds.rotation.y -= 0.001;
     }
 
     window.requestAnimationFrame(render);
   }
 })();
+
+
+// Taken from https://github.com/jeromeetienne/threex.planets/blob/master/threex.planets.js
+function createCloudMesh() {
+  'use strict';
+
+  // create destination canvas
+  var canvasResult = document.createElement('canvas');
+  canvasResult.width  = 1024;
+  canvasResult.height = 512;
+  var contextResult = canvasResult.getContext('2d');
+
+  // load earthcloudmap
+  var imageMap = new Image();
+  imageMap.addEventListener('load', function() {
+
+    // create dataMap ImageData for earthcloudmap
+    var canvasMap = document.createElement('canvas');
+    canvasMap.width = imageMap.width;
+    canvasMap.height= imageMap.height;
+    var contextMap = canvasMap.getContext('2d');
+    contextMap.drawImage(imageMap, 0, 0);
+    var dataMap = contextMap.getImageData(0, 0, canvasMap.width, canvasMap.height);
+
+    // load earthcloudmaptrans
+    var imageTrans = new Image();
+    imageTrans.addEventListener('load', function(){
+
+      // create dataTrans ImageData for earthcloudmaptrans
+      var canvasTrans = document.createElement('canvas');
+      canvasTrans.width = imageTrans.width;
+      canvasTrans.height  = imageTrans.height;
+      var contextTrans = canvasTrans.getContext('2d');
+      contextTrans.drawImage(imageTrans, 0, 0);
+      var dataTrans = contextTrans.getImageData(0, 0, canvasTrans.width, canvasTrans.height);
+
+      // merge dataMap + dataTrans into dataResult
+      var dataResult = contextMap.createImageData(canvasMap.width, canvasMap.height);
+      for(var y = 0, offset = 0; y < imageMap.height; y++){
+        for(var x = 0; x < imageMap.width; x++, offset += 4){
+          dataResult.data[offset+0] = dataMap.data[offset+0];
+          dataResult.data[offset+1] = dataMap.data[offset+1];
+          dataResult.data[offset+2] = dataMap.data[offset+2];
+          dataResult.data[offset+3] = 255 - dataTrans.data[offset+0];
+        }
+      }
+
+      // update texture with result
+      contextResult.putImageData(dataResult,0,0);
+      material.map.needsUpdate = true;
+    });
+    imageTrans.src  = '../textures/earth/earthcloudmaptrans.jpg';
+  }, false);
+
+  imageMap.src  = '../textures/earth/earthcloudmap.jpg';
+  var geometry = new THREE.SphereGeometry(21, 32, 32);
+  var material = new THREE.MeshPhongMaterial({
+    map : new THREE.Texture(canvasResult),
+    side : THREE.DoubleSide,
+    transparent : true,
+    opacity : 0.8,
+    depthWrite: false
+  });
+  var mesh = new THREE.Mesh(geometry, material);
+  return mesh;
+}
