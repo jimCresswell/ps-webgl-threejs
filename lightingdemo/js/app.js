@@ -55,6 +55,8 @@
 
     // RENDERER SETUP.
     renderer.setSize(width, height);
+    renderer.shadowMapEnabled = true;
+
     document.getElementById('webgl-container').appendChild(renderer.domElement);
 
     // CAMERA
@@ -77,9 +79,9 @@
         emissive: 0x00a000
       })
     );
-    box1.position.x = -15;
+    box1.position.x = -10;
     box1.position.y = 10;
-
+    box1.castShadow = true;
 
     box2 = new THREE.Mesh(
       new THREE.BoxGeometry(20, 20, 20),
@@ -93,6 +95,7 @@
     );
     box2.position.x = 15;
     box2.position.y = -10;
+    box2.receiveShadow = true;
 
     // Ambient light (grey).
     scene.add(light1);
@@ -101,8 +104,11 @@
     light2.position.set(30, 30, 30);
     scene.add(light2);
 
-    // Directional light (green).
-    light3.position.set(-25, 15, 0);
+    // Directional light (green, casts shadow).
+    light3.position.set(-60, 80, -60);
+    light3.castShadow = true;
+    light3.shadowMapWidth = 2048;
+    light3.shadowMapHeight = 2048;
     scene.add(light3);
 
     // Spot light (blue).
