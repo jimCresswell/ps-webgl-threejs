@@ -7,8 +7,8 @@
   'use strict';
 
   var scene = new THREE.Scene();
-  var ambientLight = new THREE.AmbientLight(0x404040);
-  var sunLight = new THREE.DirectionalLight(0xffffff);
+  var ambientLight = new THREE.AmbientLight(0xf0f0f0);
+  var sunLight = new THREE.DirectionalLight(0x202020);
   var renderer, camera, globe;
 
   // Fallback to canvas renderer if WebGL isn't available.
@@ -75,9 +75,17 @@
     var geometry = new THREE.SphereGeometry(20, 32, 32);
 
     var material = new THREE.MeshPhongMaterial();
+
+    // Ambient texture.
     material.map = THREE.ImageUtils.loadTexture('../textures/earth/earthmap1k.jpg');
-    material.bumpMap    = THREE.ImageUtils.loadTexture('../textures/earth/earthbump1k.jpg');
+
+    // Bump map.
+    material.bumpMap = THREE.ImageUtils.loadTexture('../textures/earth/earthbump1k.jpg');
     material.bumpScale = 0.2;
+
+    // Specular map.
+    material.specularMap = THREE.ImageUtils.loadTexture('../textures/earth/earthspec1k.jpg');
+    material.specular = new THREE.Color('grey');
 
     globe = new THREE.Mesh(geometry, material);
     scene.add(globe);
@@ -85,10 +93,9 @@
 
     scene.add(ambientLight);
 
-    // Directional light (green).
-    sunLight.position.set(-60, 60, 60);
+    // Directional light.
+    sunLight.position.set(-15, 15, 60);
     scene.add(sunLight);
-
 
     scene.add(camera);
   }
