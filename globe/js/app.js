@@ -9,6 +9,7 @@
   var scene = new THREE.Scene();
   var ambientLight = new THREE.AmbientLight(0xf0f0f0);
   var sunLight = new THREE.DirectionalLight(0x202020);
+  var pointerPos = {x: 0, y: 0};
   var renderer, camera, globe, clouds, space;
 
   // Fallback to canvas renderer if WebGL isn't available.
@@ -26,6 +27,7 @@
   // Make it go!
   function go() {
     initScene();
+    addUiEventListeners();
     render();
   }
 
@@ -101,7 +103,7 @@
     globe.add(clouds); // Attached to the globe.
 
     // STARS.
-    var spaceGeometry = new THREE.SphereGeometry(90, 32, 32);
+    var spaceGeometry = new THREE.SphereGeometry(200, 32, 32);
     var spaceMaterial = new THREE.MeshBasicMaterial({
       map: THREE.ImageUtils.loadTexture('../textures/galaxy_starfield.png'),
       side: THREE.BackSide
@@ -112,9 +114,41 @@
     scene.add(space);
   }
 
+  // Add event listeners for the UI
+  function addUiEventListeners() {
+
+    // Get pointer coordinates and transform to
+    // -1 to 1 coordinates in x and y.
+    addEventListener('mousemove', function(event) {
+      pointerPos.x = ((event.clientX / window.innerWidth ) - 0.5) * 2.0;
+      pointerPos.y = ((event.clientY / window.innerHeight) - 0.5) * 2.0;
+    });
+
+    // Reset the camera on click.
+    addEventListener('click', function() {
+      camera.position.set(0, 0, 100);
+
+      // Stop the camera movement until next mouse movement.
+      pointerPos = {x: 0, y: 0};
+    });
+  }
+
   // Infinite recursive loop.
   function render() {
     renderer.render(scene, camera);
+
+
+    /**
+     * Camera position.
+     */
+    camera.position.x -= pointerPos.x;
+    camera.position.y += pointerPos.y;
+    camera.lookAt( scene.position);
+
+
+    /**
+     * Rotations.
+     */
 
     if (globe) {
       globe.rotation.y += 0.001;
@@ -129,6 +163,8 @@
       space.rotation.x += 0.0001;
       space.rotation.y -= 0.00005;
     }
+
+    // Keep doing it.
     window.requestAnimationFrame(render);
   }
 })();
