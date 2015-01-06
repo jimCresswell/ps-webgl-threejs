@@ -82,7 +82,7 @@
     var geometry = new THREE.SphereGeometry(20, 32, 32);
     var material = new THREE.MeshPhongMaterial();
 
-    // Ambient texture.
+    // Diffuse map.
     material.map = THREE.ImageUtils.loadTexture('../textures/earth/earthmap1k.jpg');
 
     // Bump map.
