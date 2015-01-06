@@ -71,20 +71,28 @@
 
     var tjsLoader = new THREE.JSONLoader();
     tjsLoader.load('../models/monkeyHead.json', function(geometry, materials) {
-      var material = new THREE.MeshPhongMaterial({
-        ambient: 0xffffff,
-        specular: 0xffffff,
-        shininess: 100,
-        transparent: true,
-        opacity: 0.80,
-        side: THREE.DoubleSide
+      var texture = THREE.ImageUtils.loadTexture('../textures/glass_rain_small.jpg', {}, function() {
+        var material = new THREE.MeshPhongMaterial({
+          ambient: 0xffffff,
+          specular: 0xffffff,
+          shininess: 100,
+          transparent: true,
+          opacity: 0.80,
+          side: THREE.DoubleSide,
+          map: texture
+        });
+
+        crystalMonkeySkull = new THREE.Mesh(geometry, material);
+
+        assignUVs(crystalMonkeySkull.geometry);
+
+        crystalMonkeySkull.rotation.set(-Math.PI/15, 0, 0);
+        crystalMonkeySkull.scale.set(12, 12, 12);
+
+        scene.add(crystalMonkeySkull);
       });
-
-      crystalMonkeySkull = new THREE.Mesh(geometry, material);
-      crystalMonkeySkull.rotation.set(-Math.PI/15, 0, 0);
-      crystalMonkeySkull.scale.set(12, 12, 12);
-
-      scene.add(crystalMonkeySkull);
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
     });
 
     // Ambient light (grey).
@@ -116,3 +124,28 @@
     window.requestAnimationFrame(render);
   }
 })();
+
+function assignUVs(geometry) {
+
+    geometry.faceVertexUvs[0] = [];
+
+    geometry.faces.forEach(function(face) {
+
+        var components = ['x', 'y', 'z'].sort(function(a, b) {
+            return Math.abs(face.normal[a]) > Math.abs(face.normal[b]);
+        });
+
+        var v1 = geometry.vertices[face.a];
+        var v2 = geometry.vertices[face.b];
+        var v3 = geometry.vertices[face.c];
+
+        geometry.faceVertexUvs[0].push([
+            new THREE.Vector2(v1[components[0]], v1[components[1]]),
+            new THREE.Vector2(v2[components[0]], v2[components[1]]),
+            new THREE.Vector2(v3[components[0]], v3[components[1]])
+        ]);
+
+    });
+
+    geometry.uvsNeedUpdate = true;
+}
