@@ -54,8 +54,6 @@
     var width = window.innerWidth;
     var height = window.innerHeight;
 
-
-
     // RENDERER SETUP.
     renderer.setSize(width, height);
 
@@ -81,7 +79,6 @@
     scene.add(camera);
 
     // GLOBE.
-
     var geometry = new THREE.SphereGeometry(20, 32, 32);
     var material = new THREE.MeshPhongMaterial();
 
@@ -99,10 +96,20 @@
     globe = new THREE.Mesh(geometry, material);
     scene.add(globe);
 
-
     // CLOUDS.
     clouds = createCloudMesh();
-    globe.add(clouds);
+    globe.add(clouds); // Attached to the globe.
+
+    // STARS.
+    var spaceGeometry = new THREE.SphereGeometry(90, 32, 32);
+    var spaceMaterial = new THREE.MeshBasicMaterial({
+      map: THREE.ImageUtils.loadTexture('../textures/galaxy_starfield.png'),
+      side: THREE.BackSide
+    });
+    spaceGeometry.name = 'space';
+    var space = new THREE.Mesh(spaceGeometry, spaceMaterial);
+    space.name = 'space';
+    scene.add(space);
   }
 
   // Infinite recursive loop.
@@ -122,7 +129,10 @@
 })();
 
 
+// Create the cloud texture through manipulating two JPEGs.
 // Taken from https://github.com/jeromeetienne/threex.planets/blob/master/threex.planets.js
+// Alternatively and far more simply use a PNG with an alpha channel as the texture source:
+// http://a.disquscdn.com/uploads/mediaembed/images/625/3633/original.jpg
 function createCloudMesh() {
   'use strict';
 
