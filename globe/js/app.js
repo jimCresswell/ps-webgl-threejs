@@ -81,7 +81,7 @@
 
     // Bump map.
     material.bumpMap = THREE.ImageUtils.loadTexture('../textures/earth/earthbump1k.jpg');
-    material.bumpScale = 0.2;
+    material.bumpScale = 0.3;
 
     // Specular map.
     material.specularMap = THREE.ImageUtils.loadTexture('../textures/earth/earthspec1k.jpg');
