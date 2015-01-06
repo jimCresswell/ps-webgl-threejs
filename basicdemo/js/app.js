@@ -101,7 +101,7 @@
     var loader = new THREE.ColladaLoader();
     loader.options.convertUpAxis = true;
 
-    var modelUrl = window.location.origin + '/models/3DRT-test-character-model/test_Collada_DAE.DAE';
+    var modelUrl = '../models/3DRT-test-character-model/test_Collada_DAE.DAE';
     loader.load(modelUrl, function(collada) {
       dummy = collada.scene;
       dummy.position.x = -20;
@@ -113,7 +113,7 @@
     // Load a model exported from Blender using
     // the build in Threejs file format
     var tjsLoader = new THREE.JSONLoader();
-    tjsLoader.load(window.location.origin + '/models/monkeyHead.json', function(geometry, materials) {
+    tjsLoader.load('../models/monkeyHead.json', function(geometry, materials) {
       var material = new THREE.MeshBasicMaterial({
         color: 0xc0c0c0,
         wireframe: true
