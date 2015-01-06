@@ -72,8 +72,17 @@
     );
     camera.position.z = 100;
 
-    var geometry = new THREE.SphereGeometry(20, 32, 32);
+    scene.add(ambientLight);
 
+    // Directional light.
+    sunLight.position.set(-15, 15, 60);
+    scene.add(sunLight);
+
+    scene.add(camera);
+
+    // GLOBE.
+
+    var geometry = new THREE.SphereGeometry(20, 32, 32);
     var material = new THREE.MeshPhongMaterial();
 
     // Ambient texture.
@@ -91,13 +100,17 @@
     scene.add(globe);
 
 
-    scene.add(ambientLight);
+    // CLOUDS.
+    var cloudGeometry = new THREE.SphereGeometry(21, 32, 32);
+    var cloudMaterial = new THREE.MeshPhongMaterial({
+      side        : THREE.DoubleSide,
+      opacity     : 0.8,
+      transparent : true,
+      depthWrite  : false,
+    });
+    var cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
+    globe.add(cloudMesh);
 
-    // Directional light.
-    sunLight.position.set(-15, 15, 60);
-    scene.add(sunLight);
-
-    scene.add(camera);
   }
 
   // Infinite recursive loop.
