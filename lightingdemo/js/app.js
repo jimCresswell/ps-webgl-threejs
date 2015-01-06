@@ -2,10 +2,10 @@
   'use strict';
 
   var scene = new THREE.Scene();
-  var light1 = new THREE.AmbientLight(0xa0a0a0);
+  var light1 = new THREE.AmbientLight(0xffffff);
   var light2 = new THREE.PointLight(0xa00000, 2, 100);
   var light3 = new THREE.DirectionalLight(0x00a000, 1);
-  var light4 = new THREE.SpotLight(0x0000ff);
+  var light4 = new THREE.SpotLight(0x0000ff, 1);
   var renderer, camera, box1, box2;
 
   // Fallback to canvas renderer if WebGL isn't available.
@@ -89,7 +89,7 @@
         color: 0xffffff,
         ambient: 0xa00000,
         emissive: 0x00a000,
-        specular: 0x0000a0,
+        specular: 0xffffff,
         shininess: 100
       })
     );
@@ -112,7 +112,7 @@
     scene.add(light3);
 
     // Spot light (blue).
-    light4.position.set(15, -10, 50);
+    light4.position.set(20, -15, 50);
     scene.add(light4);
 
     // Camera.
@@ -131,9 +131,9 @@
     box1.rotation.x += 0.02;
     box1.rotation.z += 0.015;
 
-    box2.rotation.y += 0.012;
-    box2.rotation.x += 0.02;
-    box2.rotation.z += 0.015;
+    box2.rotation.y += -0.012;
+    box2.rotation.x += -0.02;
+    box2.rotation.z += -0.015;
 
     window.requestAnimationFrame(render);
   }
