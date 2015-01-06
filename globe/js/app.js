@@ -9,7 +9,7 @@
   var scene = new THREE.Scene();
   var ambientLight = new THREE.AmbientLight(0xf0f0f0);
   var sunLight = new THREE.DirectionalLight(0x202020);
-  var renderer, camera, globe, clouds;
+  var renderer, camera, globe, clouds, space;
 
   // Fallback to canvas renderer if WebGL isn't available.
   if (window.WebGLRenderingContext) {
@@ -107,7 +107,7 @@
       side: THREE.BackSide
     });
     spaceGeometry.name = 'space';
-    var space = new THREE.Mesh(spaceGeometry, spaceMaterial);
+    space = new THREE.Mesh(spaceGeometry, spaceMaterial);
     space.name = 'space';
     scene.add(space);
   }
@@ -117,13 +117,18 @@
     renderer.render(scene, camera);
 
     if (globe) {
-      globe.rotation.y += 0.004;
+      globe.rotation.y += 0.001;
     }
 
     if (clouds) {
-      clouds.rotation.y -= 0.001;
+      clouds.rotation.x += 0.0002;
+      clouds.rotation.y += 0.0005;
     }
 
+    if (space) {
+      space.rotation.x += 0.0001;
+      space.rotation.y -= 0.00005;
+    }
     window.requestAnimationFrame(render);
   }
 })();
