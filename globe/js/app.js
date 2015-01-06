@@ -1,3 +1,8 @@
+/**
+ * This is partly from the Earth in WebGL tutorial here
+ * http://learningthreejs.com/blog/2013/09/16/how-to-make-the-earth-in-webgl/
+ */
+
 (function() {
   'use strict';
 
@@ -71,6 +76,8 @@
 
     var material = new THREE.MeshPhongMaterial();
     material.map = THREE.ImageUtils.loadTexture('../textures/earth/earthmap1k.jpg');
+    material.bumpMap    = THREE.ImageUtils.loadTexture('../textures/earth/earthbump1k.jpg');
+    material.bumpScale = 0.2;
 
     globe = new THREE.Mesh(geometry, material);
     scene.add(globe);
