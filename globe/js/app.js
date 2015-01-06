@@ -9,8 +9,7 @@
   var scene = new THREE.Scene();
   var ambientLight = new THREE.AmbientLight(0xf0f0f0);
   var sunLight = new THREE.DirectionalLight(0x202020);
-  var pointerPos = {x: 0, y: 0};
-  var renderer, camera, globe, clouds, space;
+  var renderer, camera, controls, globe, clouds, space;
 
   // Fallback to canvas renderer if WebGL isn't available.
   if (window.WebGLRenderingContext) {
@@ -27,7 +26,6 @@
   // Make it go!
   function go() {
     initScene();
-    addUiEventListeners();
     render();
   }
 
@@ -72,13 +70,33 @@
     );
     camera.position.z = 100;
 
+
+    /**
+     * Lights.
+     */
+
     scene.add(ambientLight);
 
-    // Directional light.
     sunLight.position.set(-15, 15, 60);
     scene.add(sunLight);
 
+
+    /**
+     * Camara
+     */
+
     scene.add(camera);
+
+
+    /**
+     * Controls.
+     */
+  controls = new THREE.OrbitControls(camera);
+
+
+    /**
+     * Scene construction.
+     */
 
     // GLOBE.
     var geometry = new THREE.SphereGeometry(20, 32, 32);
@@ -114,41 +132,10 @@
     scene.add(space);
   }
 
-  // Add event listeners for the UI
-  function addUiEventListeners() {
-
-    // Get pointer coordinates and transform to
-    // -1 to 1 coordinates in x and y.
-    addEventListener('mousemove', function(event) {
-      pointerPos.x = ((event.clientX / window.innerWidth ) - 0.5) * 2.0;
-      pointerPos.y = ((event.clientY / window.innerHeight) - 0.5) * 2.0;
-    });
-
-    // Reset the camera on click.
-    addEventListener('click', function() {
-      camera.position.set(0, 0, 100);
-
-      // Stop the camera movement until next mouse movement.
-      pointerPos = {x: 0, y: 0};
-    });
-  }
 
   // Infinite recursive loop.
   function render() {
     renderer.render(scene, camera);
-
-
-    /**
-     * Camera position.
-     */
-    camera.position.x -= pointerPos.x;
-    camera.position.y += pointerPos.y;
-    camera.lookAt( scene.position);
-
-
-    /**
-     * Rotations.
-     */
 
     if (globe) {
       globe.rotation.y += 0.001;
