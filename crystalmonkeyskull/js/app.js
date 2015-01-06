@@ -2,10 +2,10 @@
   'use strict';
 
   var scene = new THREE.Scene();
-  var light1 = new THREE.AmbientLight(0x2c2c2c);
-  var light2 = new THREE.PointLight(0xff0000, 0.5, 50);
-  var light3 = new THREE.DirectionalLight(0x00ff00, 1);
-  var light4 = new THREE.SpotLight(0x000010, 2);
+  var light1 = new THREE.AmbientLight(0x202020);
+  var light2 = new THREE.PointLight(0xff2020, 0.5, 50);
+  var light3 = new THREE.DirectionalLight(0x20ff20, 1);
+  var light4 = new THREE.SpotLight(0x2020ff, 1);
   var renderer, camera, crystalMonkeySkull;
 
   // Fallback to canvas renderer if WebGL isn't available.
@@ -76,12 +76,12 @@
         specular: 0xffffff,
         shininess: 100,
         transparent: true,
-        opacity: 0.95,
+        opacity: 0.60,
         side: THREE.doubleSide
       });
 
       crystalMonkeySkull = new THREE.Mesh(geometry, material);
-      crystalMonkeySkull.rotation.set(-Math.PI/10, 0, 0);
+      crystalMonkeySkull.rotation.set(-Math.PI/15, 0, 0);
       crystalMonkeySkull.scale.set(12, 12, 12);
 
       scene.add(crystalMonkeySkull);
